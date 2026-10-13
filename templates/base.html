@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}BookNest{% endblock %}</title>
+    {% load static %}
+
+    
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+</head>
+
+<body>
+
+    <!-- Navbar here -->
+          <nav class="{% if request.resolver_match.url_name == 'home' %}navbar-home{% else %}navbar-light-custom{% endif %} py-3">
+            <div class="container d-flex align-items-center">
+                <div>
+
+
+                   <a href="{% url 'home' %}" class="me-3 text-decoration-none">Home</a>
+                   <a href="{% url 'book_list' %}" class="me-3 text-decoration-none">Books</a>
+                   <a href="#" class="me-3 text-decoration-none">Categories</a>
+                </div>
+                <div class="ms-auto">
+                 {% if user.is_authenticated %}
+
+                 <span class="me-3">
+                    Welcome, {{ user.first_name }}
+                 </span>
+
+                 <a href="{% url 'logout' %}"
+                  class="me-3 text-decoration-none">
+                    Logout
+                 </a>
+                 <a href="{% url 'order_history' %}" class="me-3 text-decoration-none ">
+                  My Orders
+                 </a>
+
+             {% else %}
+
+                <a href="{% url 'login' %}"
+                class="me-3 text-decoration-none">
+                    Login
+                </a>
+
+                <a href="{% url 'register' %}"
+                class="me-3 text-decoration-none">
+                    Register
+                </a>
+
+             {% endif %}
+                            <a href="{% url 'cart' %}" class="text-decoration-none">Cart</a>
+            
+             </div>
+            </div>
+        </nav>
+
+        
+
+    {% block content %}
+    {% endblock %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

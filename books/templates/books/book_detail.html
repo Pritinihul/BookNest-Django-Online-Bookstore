@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ book.title }} - BookNest{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="row">
+
+        <!-- Book Cover -->
+        <div class="col-md-4">
+
+            {% if book.cover_image %}
+                <img src="{{ book.cover_image.url }}"
+                     class="img-fluid rounded"
+                     style="max-height: 500px; object-fit: cover;">
+            {% endif %}
+
+        </div>
+
+
+        <!-- Book Information -->
+        <div class="col-md-8 ps-md-4">
+
+            <h1>{{ book.title }}</h1>
+
+            <p>
+                <strong>Author:</strong> {{ book.author }}
+            </p>
+
+            <p>
+                <strong>Publisher:</strong> {{ book.publisher }}
+            </p>
+
+            <p>
+                <strong>ISBN:</strong> {{ book.isbn }}
+            </p>
+
+            <p>
+                <strong>Category:</strong> {{ book.category }}
+            </p>
+
+            <p>
+                <strong>Published Date:</strong> {{ book.published_date }}
+            </p>
+
+            <p>
+                <strong>Description:</strong><br>
+                {{ book.description }}
+            </p>
+
+            <h3>₹{{ book.price }}</h3>
+
+            {% if book.is_available %}
+                <p class="text-success">Available</p>
+                <p>Stock: {{ book.stock }}</p>
+
+                <a  href="{% url 'add_to_cart' book.id %}" class="btn btn-primary">
+                    Add to Cart
+                </a>
+            {% else %}
+                <p class="text-danger">Not Available</p>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+{% endblock %}

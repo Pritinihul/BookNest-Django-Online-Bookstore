@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Order Confirmed - BookNest{% endblock %}
+
+{% block content %}
+
+<div class="container py-5 text-center">
+
+    <h2 class="text-success mb-3">Order Placed Successfully!</h2>
+
+    <p class="lead">
+        Thank you for your order.
+    </p>
+
+    <p>
+        Your Order ID is <strong>#{{ order.id }}</strong>
+    </p>
+
+    <p>
+        Total Amount:
+        <strong>₹{{ order.total_amount }}</strong>
+    </p>
+
+    <a href="{% url 'book_list' %}" class="btn btn-primary mt-3">
+        Continue Shopping
+    </a>
+
+</div>
+
+{% endblock %}

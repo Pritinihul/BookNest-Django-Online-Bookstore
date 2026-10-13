@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkout - BookNest{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<h2 class="mb-4">Checkout</h2>
+{% if error %}
+    <div class="alert alert-danger">
+        {{ error }}
+    </div>
+{% endif %}
+
+<div class="row">
+
+    <div class="col-md-8">
+        <div class="card mb-4">
+    <div class="card-body">
+
+        <h4 class="mb-4">Delivery Address</h4>
+        {% if addresses %}
+        <form method="post" id="placeOrderForm">
+          {% csrf_token %}
+
+            {% for address in addresses %}
+
+                    <div class="border rounded p-3 mb-3">
+                        <div class="form-check">
+                            <input
+                                class="form-check-input"
+                                type="radio"
+                                name="address_id"
+                                value="{{ address.id }}"
+                                id="address{{ address.id }}"
+                                {% if forloop.first %}checked{% endif %}
+                            >
+
+                            <label class="form-check-label" for="address{{ address.id }}">
+                                <strong>{{ address.full_name }}</strong><br>
+                                {{ address.contact }}<br>
+                                {{ address.address }}<br>
+                                {{ address.city }}, {{ address.state }} - {{ address.pincode }}
+                            </label>
+                        </div>
+                    </div>
+                {% endfor %}
+
+               
+            </form>
+
+            
+            <!-- Add New Address Button -->
+            <button
+                type="button"
+                class="btn btn-outline-primary"
+                data-bs-toggle="collapse"
+                data-bs-target="#newAddressForm">
+                + Add New Address
+            </button>
+
+            <!-- Hidden Address Form -->
+            <div class="collapse mt-3" id="newAddressForm">
+
+                <div class="border rounded p-3">
+
+                    <h5>Add New Address</h5>
+
+                    <form method="post">
+                        {% csrf_token %}
+
+                        {{ form.as_p }}
+
+                        <button type="submit" name="save_address" class="btn btn-primary">
+                            Save Address
+                        </button>
+                    </form>
+
+                </div>
+
+            </div>
+
+        {% else %}
+
+            <!-- No Address -->
+            <p class="text-muted">
+                No delivery address added yet.
+            </p>
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-toggle="collapse"
+                data-bs-target="#newAddressForm">
+                + Add New Address
+            </button>
+
+            <!-- Hidden Address Form -->
+            <div class="collapse mt-3" id="newAddressForm">
+
+                <div class="border rounded p-3">
+
+                    <h5>Add New Address</h5>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+            <button type="submit" name="save_address" class="btn btn-primary">
+               Save Address
+            </button>
+
+        </form>
+        {% endif %}
+    </div>
+</div>
+
+        <div class="card">
+            <div class="card-body">
+
+                <h4 class="mb-4">Order Summary</h4>
+
+                {% for item in cart_items %}
+
+                    <div class="d-flex justify-content-between align-items-center border-bottom py-3">
+
+                        <div>
+                            <h6 class="mb-1">{{ item.book.title }}</h6>
+                            <small class="text-muted">
+                                Quantity: {{ item.quantity }}
+                            </small>
+                        </div>
+
+                        <strong>
+                            ₹{% widthratio item.book.price 1 item.quantity %}
+                        </strong>
+
+                    </div>
+
+                    {% empty %}
+
+                    <p>Your cart is empty.</p>
+
+                    {% endfor %}
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="col-md-4">
+
+        <div class="card">
+            <div class="card-body">
+
+                <h4>Price Details</h4>
+
+                <div class="d-flex justify-content-between mt-3">
+                    <span>Subtotal</span>
+                    <span>₹{{ subtotal }}</span>
+                </div>
+
+                <hr>
+
+                <div class="d-flex justify-content-between">
+                    <strong>Total</strong>
+                    <strong>₹{{ total }}</strong>
+                </div>
+                <div class="text-end mt-4">
+                <button type="submit"
+                 name="place_order"
+                  class="btn booknest-btn"
+                  form="placeOrderForm">
+                  Place Order
+                </button>
+            </div>
+                
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+{% endblock %}
